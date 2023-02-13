@@ -4,6 +4,7 @@ import random
 bot = telebot.TeleBot("5882864761:AAF7T2me-rzwgE8kYCbtrRQup6XLRykv09E", parse_mode=None)
 ind = False
 game = False
+count = 1
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -33,6 +34,7 @@ def echo_all(message):
 	global ind
 	global game
 	global numbers
+	global count
 	if ind:
 		ans = eval(message.text)
 		bot.reply_to(message, f'Ответ: {ans}')
@@ -40,13 +42,15 @@ def echo_all(message):
 	if game:
 		if message.text.isdigit():	
 			if int(message.text) == numbers:
-				bot.reply_to(message, 'Ура! Вы угадали! Игра закончена')
+				bot.reply_to(message, f'Вы угадали! Всего ходов: {count}\nИгра закончена')
 				game = False
+				count = 0
 			else:
 				if int(message.text) > numbers:
 					bot.reply_to(message, 'Моё число меньше')
 				else:
 					bot.reply_to(message, 'Моё число больше')
+				count +=1
 		elif message.text == 'конец игры':
 			bot.reply_to(message, 'Игра закончена')
 			game = False
